@@ -24,6 +24,23 @@ const Dashboard = () => {
 
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
 
+  const { data, isPending, error } = useGetWorkspaceStatsQuery(
+    workspaceId,
+    { enabled: !!workspaceId }
+  ) as {
+    data?: {
+      stats: StatsCardProps;
+      taskTrendsData: TaskTrendsData[];
+      projectStatusData: ProjectStatusData[];
+      taskPriorityData: TaskPriorityData[];
+      workspaceProductivityData: WorkspaceProductivityData[];
+      upcomingTasks: Task[];
+      recentProjects: Project[];
+    };
+    isPending: boolean;
+    error?: any;
+  };
+
   if (!workspaceId) {
     return (
       <div className="text-center mt-8">
@@ -41,22 +58,6 @@ const Dashboard = () => {
       </div>
     );
   }
-
-  const { data, isPending, error } = useGetWorkspaceStatsQuery(
-    workspaceId
-  ) as {
-    data?: {
-      stats: StatsCardProps;
-      taskTrendsData: TaskTrendsData[];
-      projectStatusData: ProjectStatusData[];
-      taskPriorityData: TaskPriorityData[];
-      workspaceProductivityData: WorkspaceProductivityData[];
-      upcomingTasks: Task[];
-      recentProjects: Project[];
-    };
-    isPending: boolean;
-    error?: any;
-  };
 
   if (isPending || !data) {
     return (
