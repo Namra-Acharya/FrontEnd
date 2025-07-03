@@ -13,17 +13,17 @@ const WorkspaceDetails = () => {
   const [isCreateProject, setIsCreateProject] = useState(false);
   const [isInviteMember, setIsInviteMember] = useState(false);
 
-  if (!workspaceId) {
-    return <div>No workspace found</div>;
-  }
-
-  const { data, isLoading } = useGetWorkspaceQuery(workspaceId) as {
+  const { data, isLoading } = useGetWorkspaceQuery(workspaceId, { enabled: !!workspaceId }) as {
     data: {
       workspace: Workspace;
       projects: Project[];
     };
     isLoading: boolean;
   };
+
+  if (!workspaceId) {
+    return <div>No workspace found</div>;
+  }
 
   if (isLoading) {
     return (
