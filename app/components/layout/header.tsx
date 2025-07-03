@@ -12,7 +12,8 @@ import {
   DropdownMenuGroup,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import { useGetWorkspacesQuery } from "@/hooks/use-workspace";
 import { WorkspaceAvatar } from "../workspace/workspace-avatar";
 
 interface HeaderProps {
@@ -29,9 +30,8 @@ export const Header = ({
   const navigate = useNavigate();
 
   const { user, logout } = useAuth();
-  // Safely get workspaces from loader data, fallback to empty array if undefined
-  const loaderData = (useLoaderData() as { workspaces?: Workspace[] }) || {};
-  const workspaces = loaderData.workspaces ?? [];
+  // Fetch workspaces using React Query
+  const { data: workspaces = [] } = useGetWorkspacesQuery() as { data?: Workspace[] };
   const isOnWorkspacePage = useLocation().pathname.includes("/workspace");
 
   const handleOnClick = (workspace: Workspace) => {
